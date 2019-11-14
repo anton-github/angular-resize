@@ -1,0 +1,7 @@
+/package-lock.json
+/angular.json
+/tsconfig.app.json
+/tsconfig.json
+/tsconfig.spec.json
+.idea
+node_modules
