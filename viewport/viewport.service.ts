@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, fromEvent} from "rxjs";
-import {debounceTime,} from "rxjs/operators";
+import {debounceTime} from "rxjs/operators";
 
 interface IViewportSizes {
     medium: number;
@@ -33,14 +33,16 @@ export class ViewportService {
 
         fromEvent<any>(window, "resize").pipe(
             debounceTime(this.getDebounceMs())
-        ).subscribe(() => {
-            const viewportSize = this.getViewportSize();
-            if (viewportSize !== this.currentViewportSize) {
-                this.currentViewportSize = viewportSize;
-                this.viewportSizeChanges.next(viewportSize);
-            }
-        });
+        ).subscribe(this.onWindowResize);
     }
+
+    private onWindowResize = () => {
+        const viewportSize = this.getViewportSize();
+        if (viewportSize !== this.currentViewportSize) {
+            this.currentViewportSize = viewportSize;
+            this.viewportSizeChanges.next(viewportSize);
+        }
+    };
 
     private getDebounceMs() {
         return 'debounceMs' in this.config ? this.config.debounceMs : DEBOUNCE_MS_DEFAULT;
